@@ -1,0 +1,10 @@
+{
+	"articles": [
+		{
+			"filepath": "exemple.md",
+			"title": "exemple",
+			"tags": ["exemple"]
+		},
+		{ "filepath": "end.md", "tags": ["all"] }
+	]
+}

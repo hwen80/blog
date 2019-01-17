@@ -1,0 +1,46 @@
+body {
+	font-family: Sans-serif;
+	padding: 20px;
+	background: #c1c1c1;
+}
+
+.card {
+	background-color: white;
+	padding: 20px;
+}
+
+.inter {
+	height: 30px;
+	background: #c1c1c1;
+}
+
+.center {
+	text-align: center;
+}
+
+table {
+	border-collapse: collapse;
+	width: 90%;
+}
+
+th, td {
+	height: 33px;
+}
+
+table, th, td {
+	border: 2px solid #aaa;
+}
+
+table, p {
+	margin-inline-start: 22px;
+}
+
+img {
+	height: 28px;
+}
+
+pre {
+	margin-inline-start: 23px;
+	padding: 10px;
+	background: #e1e1e1;
+}	
