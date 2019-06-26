@@ -7,6 +7,7 @@ body {
 .card {
 	background-color: white;
 	padding: 20px;
+	border-radius: 30px;
 }
 
 .inter {
@@ -20,7 +21,7 @@ body {
 
 table {
 	border-collapse: collapse;
-	width: 90%;
+	width: 95%;
 }
 
 th, td {
@@ -43,4 +44,5 @@ pre {
 	margin-inline-start: 23px;
 	padding: 10px;
 	background: #e1e1e1;
+	border-radius: 20px;
 }	

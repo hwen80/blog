@@ -20,27 +20,25 @@ http.createServer((req, res) => {
                 res.end('404 File Not Found\n');
             }
             else {
-                if (filename.match('.md')) {
-                    res.writeHead(200, {'Content-Type': 'text/html'});
-                    fs.readFile(filename, 'utf-8', (err, data) => {
-                        res.write('<div class="card">');
-                        res.write(marked(data));
-                        res.write('</div><div class="inter"></div>');
-                        res.end();
-                    });
+                if (filename.match('.json')) {
+                    res.writeHead(200, {'Content-Type': 'application/json'});
+                    fs.createReadStream(filename, 'utf-8').pipe(res);
                 }
                 else if (filename.match('.png')) {
                     res.writeHead(200, {'Content-Type': 'image/png'});
-                    fs.readFile(filename, (err, data) => {
-                        res.write(data);
-                        res.end();
-                    });
+                    fs.createReadStream(filename).pipe(res);
                 }
                 else {
-                    res.writeHead(200, {'Content-Type': 'application/json'});
-                    fs.readFile(filename, 'utf-8', (err, data) => {
-                        res.write(data);
-                        res.end();
+                    res.writeHead(200, {'Content-Type': 'text/html'});
+                    res.write('<div class="card">');
+                    const read = fs.createReadStream(filename, 'utf-8');
+                    var markdown = "";
+                    read.on('data', function (data) {
+                        markdown += data;
+                    });
+                    read.on('end', function() {
+                        res.write(marked(markdown));
+                        res.end('</div><div class="inter"></div>');
                     });
                 }
             }
@@ -48,21 +46,17 @@ http.createServer((req, res) => {
     }
     else {
         res.writeHead(200, {'Content-Type': 'text/html'});
-        res.write('<head><meta charset="UTF-8"><title>Blog Exemple</title></head>');
-        fs.readFile('style.css', 'utf-8', (err, data) => {
-            if (err) { return res.end(err); }
-            res.write('<style>');
-            res.write(data);
-            res.write('</style>');
-
-        fs.readFile('script.js', 'utf-8', (err, data) => {
-	    if (err) { return res.end(err); }
-            res.write('<script>');
-            res.write(tag ? 'var tag="' + tag + '";' : 'var tag;');
-            res.write(title ? 'var title="' + title + '";' : 'var title;');
-            res.write(data);
-            res.write('</script>');
-            res.end();
-        });});
+        res.write('<head><meta charset="UTF-8"><title>Blog d\'Ernest</title></head>');
+        res.write('<style>');
+        const style = fs.createReadStream('style.css', 'utf-8');
+        style.on('data', (data) => { res.write(data); })
+             .on('end', () => {
+                res.write('</style><script>');
+                res.write(tag ? 'var tag="' + tag + '";' : 'var tag;');
+                res.write(title ? 'var title="' + title + '";' : 'var title;');
+                const script = fs.createReadStream('script.js', 'utf-8');
+                script.on('data', (data) => { res.write(data); })
+                      .on('end', () => { res.end('</script>'); });
+        });
     }
 }).listen(8080);
